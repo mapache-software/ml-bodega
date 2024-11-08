@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "ml-bodega"
+name = "mlbodega"
 version = "0.1.0"
 description = ""
 authors = ["mr-raccoon-97 <eric.m.cardozo@mi.unc.edu.ar>"]
