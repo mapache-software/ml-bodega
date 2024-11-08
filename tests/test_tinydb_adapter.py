@@ -1,5 +1,6 @@
 from pytest import fixture, raises
 from mlbodega.schemas import Experiment, Model, Metric
+from mlbodega.schemas import Transaction, Criterion, Optimizer, Iteration, Dataset
 from mlbodega.tinydb.experiments import Experiments
 from mlbodega.tinydb.models import Models
 
@@ -58,3 +59,64 @@ def test_metrics(models: Models):
 
     metrics = models.metrics.list(model)
     assert len(metrics) == 3
+
+def test_transactions(models: Models):
+    model = Model(id='1', hash='1', name='MLP', parameters={'hidden_units': 128}, epochs=10)
+    models.put(model)
+    models.transactions.put(Transaction(
+        hash='123',
+        epochs=(12, 15),
+        start='2021-01-01T00:00:00',
+        end='2021-01-01T00:00:20',
+        criterion=Criterion(
+            hash='1234',
+            name='CrossEntropy',
+            parameters={}
+        ),
+        optimizer=Optimizer(
+            hash='123',
+            name='Adam',
+            parameters={'lr': 0.001}
+        ),
+        iterations=[Iteration(
+            phase='train',
+            dataset=Dataset(
+                hash='123',
+                name='MNIST',
+                parameters={'train': True}
+            ),
+            parameters={'batch_size': 32}
+        )]
+    ), model)
+
+    transactions = models.transactions.list(model)
+    assert len(transactions) == 1
+
+    models.transactions.put(Transaction(
+        hash='123',
+        epochs=(12, 20),
+        start='2021-01-01T00:00:00',
+        end='2021-01-01T00:00:20',
+        criterion=Criterion(
+            hash='1234',
+            name='CrossEntropy',
+            parameters={}
+        ),
+        optimizer=Optimizer(
+            hash='123',
+            name='Adam',
+            parameters={'lr': 0.001}
+        ),
+        iterations=[Iteration(
+            phase='train',
+            dataset=Dataset(
+                hash='123',
+                name='MNIST',
+                parameters={'train': True}
+            ),
+            parameters={'batch_size': 32}
+        )]
+    ), model)
+
+    transactions = models.transactions.list(model)
+    assert len(transactions) == 1

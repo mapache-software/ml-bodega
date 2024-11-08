@@ -3,11 +3,13 @@ from tinydb import TinyDB, where
 from mlbodega.ports import Models as Collection
 from mlbodega.schemas import Model, Experiment
 from mlbodega.tinydb.metrics import Metrics
+from mlbodega.tinydb.transactions import Transactions
 
 class Models(Collection):
     def __init__(self, location: str, experiment: Experiment):
         self.db = TinyDB(f'{location}/database.json')
         self.metrics = Metrics(location)
+        self.transactions = Transactions(location)
         self.table = self.db.table(f'models')
         self.key = str(experiment.id)
     
