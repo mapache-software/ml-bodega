@@ -14,6 +14,9 @@ class Metrics(ABC):
     @abstractmethod
     def add(self, metric: Metric, model: Model): ...
 
+    @abstractmethod
+    def clear(self, model: Model): ...
+
 class Transactions(ABC):
 
     @abstractmethod
@@ -27,6 +30,9 @@ class Transactions(ABC):
 
     @abstractmethod
     def remove(self, transaction: Transaction, model: Model): ...
+
+    @abstractmethod
+    def clear(self, model: Model): ...
 
 
 class Models(ABC):

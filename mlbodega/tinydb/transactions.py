@@ -26,3 +26,6 @@ class Transactions(Collection):
     
     def remove(self, transaction: Transaction, model: Model):
         self.table.remove((where('hash') == transaction.hash) & (where('model') == model.hash))
+    
+    def clear(self, model: Model):
+        self.table.remove(where('model') == model.hash)
