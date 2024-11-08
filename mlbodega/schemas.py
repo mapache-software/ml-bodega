@@ -55,7 +55,7 @@ class Iteration(Schema):
     parameters: dict[str, Any]
     
 @dataclass
-class Session(Schema):
+class Transaction(Schema):
     epochs: tuple[int, int]
     hash: str
     start: datetime

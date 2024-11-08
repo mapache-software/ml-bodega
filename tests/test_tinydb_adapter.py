@@ -1,5 +1,5 @@
 from pytest import fixture, raises
-from mlbodega.schemas import Experiment, Model
+from mlbodega.schemas import Experiment, Model, Metric
 from mlbodega.tinydb.experiments import Experiments
 from mlbodega.tinydb.models import Models
 
@@ -48,3 +48,13 @@ def test_models(models: Models):
     assert len(models.list()) == 2
     models.remove(model)
     assert len(models.list()) == 1
+
+def test_metrics(models: Models):
+    model = Model(id='1', hash='1', name='MLP', parameters={'hidden_units': 128}, epochs=10)
+    models.put(model)
+    models.metrics.add(Metric(name='accuracy', value=0.9, batch=10, epoch=10, phase='train'), model)
+    models.metrics.add(Metric(name='accuracy', value=0.8, batch=10, epoch=10, phase='val'), model)
+    models.metrics.add(Metric(name='loss', value=0.1, batch=10, epoch=10, phase='train'), model)
+
+    metrics = models.metrics.list(model)
+    assert len(metrics) == 3
